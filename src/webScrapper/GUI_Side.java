@@ -4,12 +4,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -33,15 +36,20 @@ public class GUI_Side extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		scraper.leadingScorer("https://www.basketball-reference.com/boxscores/");
-		window = primaryStage;
+		window = primaryStage; 
 
 		DatePicker date = new DatePicker();
 
 		submit = new Button("Submit");
+		
 
-		VBox layout1 = new VBox(20);
-		layout1.getChildren().addAll(date, submit);
+		VBox layout1 = new VBox(20, date, submit);
+		
+		layout1.setPadding(new Insets(10));
+	
 		scene = new Scene(layout1, 250, 500);
+		
+		
 
 		submit.setOnAction(e -> generate(date.getValue()));
 

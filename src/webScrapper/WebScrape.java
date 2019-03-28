@@ -41,19 +41,22 @@ public class WebScrape {
 		try {
 			final Document document = Jsoup.connect(url).get();
 			
+			int counter = 0;
+			
 			String player = "td:nth-of-type(2)";
 			String points = "td:nth-of-type(3)";
 			
 			for(Element row : document.select("table.stats td")) {
-				if(row.select(points).text().equals("") && row.select(player).text().equals("")) {
-					continue;
-				}
-				else {
-					ticker = row.select(player).text() + row.select(points).text();
+				if(!(row.select(points).text().equals("")) || !(row.select(player).text().equals(""))) {
+					ticker += " " + row.select(points).text() + row.select(player).text();
+					counter++;
+					}
+				if(counter % 2 == 0) {
+					if(!ticker.equals(""))
 					leadingStats.add(ticker);
+					ticker = "";
 				}
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,5 +1,6 @@
 package webScrapper;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
@@ -30,5 +31,34 @@ public class WebScrape {
 		return teamsAndScores;
 
 	}
+	
+	public ArrayList<String> leadingScorer(String url) {
+		
+		ArrayList<String> leadingStats = new ArrayList<String> ();
+		
+		String ticker = "";
+		
+		try {
+			final Document document = Jsoup.connect(url).get();
+			
+			String player = "td:nth-of-type(2)";
+			String points = "td:nth-of-type(3)";
+			
+			for(Element row : document.select("table.stats td")) {
+				if(row.select(points).text().equals("") && row.select(player).text().equals("")) {
+					continue;
+				}
+				else {
+					ticker = row.select(player).text() + row.select(points).text();
+					leadingStats.add(ticker);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return leadingStats;
+	}
+	
 
 }

@@ -1,14 +1,17 @@
 package webScrapper;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 
 public class GUI_Side extends Application{
@@ -25,30 +28,26 @@ public class GUI_Side extends Application{
 		
 		launch(args);
 		
+		
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		scraper.leadingScorer("https://www.basketball-reference.com/boxscores/");
 		window = primaryStage;
-		Label monthText = new Label("Enter month:");
-		month = new TextField();
 		
-		Label dayText = new Label("Enter day:");
-		day = new TextField();
-		
-		Label yearText = new Label("Enter year:");
-		year = new TextField();
+		DatePicker date = new DatePicker();
+
 		
 		submit = new Button("Submit");
 		
 		VBox layout1 = new VBox(20);
-		layout1.getChildren().addAll(monthText, month,dayText, day,yearText, year, submit);
+		layout1.getChildren().addAll(date, submit);
 		scene = new Scene(layout1, 250,500);
 		
 		
-		submit.setOnAction(e -> generate(month.getText(), day.getText(), year.getText()));
 		
-		
+		submit.setOnAction(e -> generate(date.getValue()));
 		
 		
 		window.setScene(scene);
@@ -57,7 +56,12 @@ public class GUI_Side extends Application{
 		
 	}
 	
-	public void generate(String month, String day, String year) {
+	public void generate(LocalDate date) {
+				
+		int year = date.getYear();
+		int day = date.getDayOfMonth();
+		int month = date.getMonthValue();
+		
 		VBox layout2 = new VBox(20);
 		hello = scraper.getScores("https://www.basketball-reference.com/boxscores/?month="+month+"&day="+day+"&year="+year);
 		
@@ -76,11 +80,13 @@ public class GUI_Side extends Application{
 		
 		Label scores = new Label(lab);
 		
-		layout2.getChildren().add(scores);
+		layout2.getChildren().addAll(scores);
 		scene2 = new Scene(layout2, 250,500);
 		window.setScene(scene2);
 		
 	}
+	
+	
 
 	
 

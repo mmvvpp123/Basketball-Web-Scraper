@@ -1,6 +1,5 @@
 package webScrapper;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
@@ -13,8 +12,6 @@ public class WebScrape {
 
 		ArrayList <String> teamsAndScores = new ArrayList<String> ();
 		
-		final String output = url;
-
 		try {
 			final Document document = Jsoup.connect(url).get();
 			
@@ -27,9 +24,7 @@ public class WebScrape {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return teamsAndScores;
-
 	}
 	
 	public ArrayList<String> leadingScorer(String url) {
@@ -62,6 +57,5 @@ public class WebScrape {
 		}
 		return leadingStats;
 	}
-	
 
 }

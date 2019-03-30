@@ -35,21 +35,17 @@ public class GUI_Side extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		scraper.leadingScorer("https://www.basketball-reference.com/boxscores/");
-		window = primaryStage; 
-
-		DatePicker date = new DatePicker();
-
+		window = primaryStage;
+		window.setResizable(false);
 		submit = new Button("Submit");
 		
+		Label pickDateText = new Label("Pick a date: ");
+		DatePicker date = new DatePicker();
+		VBox layout1 = new VBox(20, pickDateText, date, submit);
 
-		VBox layout1 = new VBox(20, date, submit);
-		
 		layout1.setPadding(new Insets(10));
-	
+
 		scene = new Scene(layout1, 250, 500);
-		
-		
 
 		submit.setOnAction(e -> generate(date.getValue()));
 
@@ -65,39 +61,43 @@ public class GUI_Side extends Application {
 		int day = date.getDayOfMonth();
 		int month = date.getMonthValue();
 
+		String url = "https://www.basketball-reference.com/boxscores/?month=" + month + "&day=" + day + "&year=" + year;
+
 		VBox layout2 = new VBox(20);
-		hello = scraper.getScores(
-				"https://www.basketball-reference.com/boxscores/?month=" + month + "&day=" + day + "&year=" + year);
-		playerStats = scraper.leadingScorer(
-				"https://www.basketball-reference.com/boxscores/?month=" + month + "&day=" + day + "&year=" + year);
-		
-		String lab = "";
-		String players = "";
+		layout2.setPadding(new Insets(5));
+
+		hello = scraper.getScores(url);
+		playerStats = scraper.leadingScorer(url);
+
+		String labelText = "";
+		String playerBoxScore = "";
 		int playerCounter = 0;
 		for (int i = 0; i < hello.size(); i++) {
-			lab += hello.get(i);
-			if(playerCounter % 2 == 0) {
-				players += "\tPTS: ";
-			}
-			else
-				players += "\tTRB: ";
-			players += playerStats.get(i) + "\n";
-			lab += "\n";
-			playerCounter++;
-			
+			labelText += hello.get(i);
 			if (playerCounter % 2 == 0) {
- 				lab += players;
- 				lab += "\n";
- 				players = "";
+				playerBoxScore += "\tPTS: ";
+			} else
+				playerBoxScore += "\tTRB: ";
+			playerBoxScore += playerStats.get(i) + "\n";
+			labelText += "\n";
+			playerCounter++;
+
+			if (playerCounter % 2 == 0) {
+				labelText += playerBoxScore;
+				labelText += "\n";
+				playerBoxScore = "";
 			}
 		}
-		
-		Label scores = new Label(lab);
 
-		layout2.getChildren().addAll(scores);
+		Label scores = new Label(labelText);
+
+		Button back = new Button("Go back");
+		back.setOnAction(e -> window.setScene(scene));
+
+		layout2.getChildren().addAll(scores, back);
 		ScrollPane pane = new ScrollPane(layout2);
 		scene2 = new Scene(pane, 250, 500);
 		window.setScene(scene2);
 	}
-	
+
 }

@@ -11,9 +11,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class GUI_Side extends Application {
@@ -90,14 +89,20 @@ public class GUI_Side extends Application {
 		}
 
 		Label scores = new Label(labelText);
+		
+		if(labelText.length() < 1) {
+			scores = new Label("No Games On This Day");
+		}
+		
+		Label dateOfScores = new Label(month + "/" + day +"/" + year);
+		dateOfScores.setFont(new Font("Arial", 20));
 
 		Button back = new Button("Go back");
 		back.setOnAction(e -> window.setScene(scene));
 
-		layout2.getChildren().addAll(scores, back);
+		layout2.getChildren().addAll(dateOfScores, scores, back);
 		ScrollPane pane = new ScrollPane(layout2);
 		scene2 = new Scene(pane, 250, 500);
 		window.setScene(scene2);
 	}
-
 }

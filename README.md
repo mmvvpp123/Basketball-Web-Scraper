@@ -1,4 +1,4 @@
-# Basketball-Web-Scrapper
+# Basketball-Web-Scraper
 Using JSoup, I scrape scores from entered date
 
 Download JSoup from https://jsoup.org/download
